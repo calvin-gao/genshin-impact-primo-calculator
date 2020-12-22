@@ -36,7 +36,7 @@ export class PrimoForm extends Component {
 
     calculateDays = (currentPrimo , hasMonthly) => {
         let newDay = 0;
-        if(hasMonthly == 'true'){
+        if(hasMonthly === 'true'){
             newDay = Math.max(0,Math.ceil((FIRST5STARPRIMOCOUNT - currentPrimo) /  (DAILYCOMMISIONGEMS + MONTHLYPERDAY)));
         }else{
             newDay = Math.max(0,Math.ceil((FIRST5STARPRIMOCOUNT - currentPrimo) /  (DAILYCOMMISIONGEMS)));
