@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { MonthlyCard } from './MonthlyCard';
 
 const COSTPERROLL = 160;
 const DAILYCOMMISIONGEMS = 60;
 const MONTHLYPERDAY = 90;
 //const MONTHLYINITIAL = 300;
 const FIRST5STARPRIMOCOUNT = 14400;
-const GURANTEEBANNER5STAR = 28800;
+//const GURANTEEBANNER5STAR = 28800;
 
 export class PrimoForm extends Component {
     constructor(props) {
