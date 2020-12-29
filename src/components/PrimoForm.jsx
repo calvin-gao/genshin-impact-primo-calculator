@@ -8,6 +8,11 @@ const FIRST5STARPRIMOCOUNT = 14400;
 //const GURANTEEBANNER5STAR = 28800;
 const SOFTPITYPRIMO = 12160;
 
+
+function isNumeric(n) {
+    return (!isNaN(parseFloat(n)) && isFinite(n)) || n === "";
+};
+
 export class PrimoForm extends Component {
     constructor(props) {
         super(props)
@@ -23,17 +28,21 @@ export class PrimoForm extends Component {
 
 
     handlePrimogemsChange = (event) => {
-        this.setState({
-            primogems : event.target.value
-        })
-        this.calculateRolls(event);
+        if(isNumeric(event.target.value)){
+            this.setState({
+                primogems : event.target.value
+            })
+            this.calculateRolls(event);
+        }
     }
 
     handlePityChange = (event) => {
-        this.setState({
-            pity: event.target.value
-        })
-        this.calculateRolls(event);
+        if(isNumeric(event.target.value)){
+            this.setState({
+                pity: event.target.value
+            })
+            this.calculateRolls(event);
+        }
     }
 
     handleSoftPityChange = (event) => {
