@@ -19,9 +19,10 @@ export class PrimoForm extends Component {
         this.state = {
              primogems : '',
              rolls : 0,
+             fates : 0,
+             pity: 0,
              monthly: false,
              daysTo5Star: 240,
-             pity: 0,
              isSoftPity: false
         }
     }
@@ -44,6 +45,14 @@ export class PrimoForm extends Component {
             this.calculateRolls(event);
         }
     }
+    
+    handleFateChange = (event) => {
+        if(isNumeric(event.target.value)){
+            this.setState({
+                fates : event.target.value
+            }, function() {this.calculateRolls(event) })
+        }
+    }
 
     handleSoftPityChange = (event) => {
         this.setState({
@@ -51,24 +60,27 @@ export class PrimoForm extends Component {
         }, function() {this.calculateRolls(event) })
     }
 
+
     handleMonthlyCardChange = (event) => {
-        
         this.setState({
             monthly : event.target.value
         } ,  function() {this.calculateRolls(event) })
     }
 
-    calculateDays = (currentPrimo , hasMonthly , pity, softPity) => {
+    calculateDays = (currentPrimo , hasMonthly , softPity) => {
         let newDay = 0;
+
         let targetRolls = FIRST5STARPRIMOCOUNT;
         if(softPity === 'true'){
             targetRolls = SOFTPITYPRIMO;
         }
-        if(hasMonthly === 'true'){
-            newDay = Math.max(0,Math.ceil((targetRolls - currentPrimo - (pity * COSTPERROLL)) /  (DAILYCOMMISIONGEMS + MONTHLYPERDAY)));
-        }else{
-            newDay = Math.max(0,Math.ceil((targetRolls - currentPrimo - (pity * COSTPERROLL)) /  (DAILYCOMMISIONGEMS)));
+
+        let dailyPrimosGet = DAILYCOMMISIONGEMS;
+        if (hasMonthly === 'true'){
+            dailyPrimosGet += MONTHLYPERDAY
         }
+
+        newDay = Math.max(0,Math.ceil((targetRolls - currentPrimo) / dailyPrimosGet));
         return newDay;
     }
     
@@ -77,9 +89,14 @@ export class PrimoForm extends Component {
         currentPrimo = currentPrimo || 0;
         let pity = parseInt(this.state.pity);
         pity = pity || 0;
-        let newRolls = currentPrimo / COSTPERROLL;
+        let fates = parseInt(this.state.fates);
+        fates = fates || 0;
 
-        let newDay =  this.calculateDays(currentPrimo , this.state.monthly, pity, this.state.isSoftPity);
+        // calculate new primos based on pity, fates, and current primos
+        let newPseudoPrimo = currentPrimo + ((pity + fates) * COSTPERROLL)
+
+        let newDay =  this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity);
+        let newRolls = currentPrimo / COSTPERROLL;
 
         this.setState(
             {rolls : newRolls,
@@ -105,6 +122,14 @@ export class PrimoForm extends Component {
                     <input type="text"
                     value = {this.state.pity}
                     onChange={this.handlePityChange}
+                    onKeyUp={this.calculateRolls}
+                    />
+                </div>
+                <div>
+                    <label> Fates: </label>
+                    <input type="text"
+                    value = {this.state.fates}
+                    onChange={this.handleFateChange}
                     onKeyUp={this.calculateRolls}
                     />
                 </div>
