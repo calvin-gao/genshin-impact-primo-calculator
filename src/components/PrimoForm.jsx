@@ -5,8 +5,9 @@ const DAILYCOMMISIONGEMS = 60;
 const MONTHLYPERDAY = 90;
 //const MONTHLYINITIAL = 300;
 const FIRST5STARPRIMOCOUNT = 14400;
-//const GURANTEEBANNER5STAR = 28800;
+const GURANTEEBANNER5STAR = 28800;
 const SOFTPITYPRIMO = 12160;
+const TWOTIMESOFTPITY = 24320;
 
 
 function isNumeric(n) {
@@ -23,7 +24,9 @@ export class PrimoForm extends Component {
              pity: 0,
              monthly: false,
              daysTo5Star: 240,
-             isSoftPity: false
+             daysToBanner5Star: 480,
+             isSoftPity: false,
+             gurantee5Star: false,
         }
     }
 
@@ -67,14 +70,23 @@ export class PrimoForm extends Component {
         } ,  function() {this.calculateRolls(event) })
     }
 
-    calculateDays = (currentPrimo , hasMonthly , softPity) => {
+    calculateDays = (currentPrimo , hasMonthly , softPity, lastRoll5Star) => {
         let newDay = 0;
 
         let targetRolls = FIRST5STARPRIMOCOUNT;
-        if(softPity === 'true'){
-            targetRolls = SOFTPITYPRIMO;
+
+        if(lastRoll5Star){
+            targetRolls = GURANTEEBANNER5STAR;
         }
 
+        if(softPity === 'true'){
+            if(lastRoll5Star){
+                targetRolls = TWOTIMESOFTPITY;
+            }else{
+                targetRolls = SOFTPITYPRIMO;
+            }
+        }
+    
         let dailyPrimosGet = DAILYCOMMISIONGEMS;
         if (hasMonthly === 'true'){
             dailyPrimosGet += MONTHLYPERDAY
@@ -93,14 +105,16 @@ export class PrimoForm extends Component {
         fates = fates || 0;
 
         // calculate new primos based on pity, fates, and current primos
-        let newPseudoPrimo = currentPrimo + ((pity + fates) * COSTPERROLL)
+        let newPseudoPrimo = currentPrimo + ((pity + fates) * COSTPERROLL);
 
-        let newDay =  this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity);
+        let newDay =  this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity, false);
+        let newGurante5StarDay = this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity, true);
         let newRolls = currentPrimo / COSTPERROLL;
 
         this.setState(
             {rolls : newRolls,
             daysTo5Star : newDay,
+            daysToBanner5Star : newGurante5StarDay
          }
         );
     }
@@ -135,8 +149,9 @@ export class PrimoForm extends Component {
                 </div>
 
                 <h2>You have : {`${this.state.rolls}`} rolls </h2>
-                <h2>You are {`${this.state.daysTo5Star}`} days from a 5 star</h2>
-                <p>Monthly Card</p>
+                <h2>You are {`${this.state.daysTo5Star}`} days from a random 5 star</h2>
+                <h2>You are {`${this.state.daysToBanner5Star}`} days from a guaranteed 5 star</h2>
+                <p>Welkin Moon</p>
                 <select onChange = {this.handleMonthlyCardChange} value = { this.state.monthly}>
                     <option value={true}>Yes</option>
                     <option value={false}>No</option>
