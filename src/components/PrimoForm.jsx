@@ -123,44 +123,50 @@ export class PrimoForm extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <label> Primogems: </label>
-                    <input type="text"
-                    value = {this.state.primogems}
-                    onChange={this.handlePrimogemsChange}
-                    onKeyUp={this.calculateRolls}
-                    />
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <div>
+                            <label class="mx-2"> Primogems: </label>
+                            <input type="text"
+                            value = {this.state.primogems}
+                            onChange={this.handlePrimogemsChange}
+                            onKeyUp={this.calculateRolls}
+                            />
+                        </div>
+                        <div>
+                            <label class="mx-2"> Pity: </label>
+                            <input type="text"
+                            value = {this.state.pity}
+                            onChange={this.handlePityChange}
+                            onKeyUp={this.calculateRolls}
+                            />
+                        </div>
+                        <div>
+                            <label class="mx-2"> Fates:</label>
+                            <input type="text"
+                            value = {this.state.fates}
+                            onChange={this.handleFateChange}
+                            onKeyUp={this.calculateRolls}
+                            />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <p class="m-1">Welkin Moon</p>
+                        <select onChange = {this.handleMonthlyCardChange} value = { this.state.monthly}>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                        </select>
+                        <p class="m-1">Soft Pity? (76 rolls)</p>
+                        <select onChange = {this.handleSoftPityChange} value = { this.state.isSoftPity}>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label> Pity: </label>
-                    <input type="text"
-                    value = {this.state.pity}
-                    onChange={this.handlePityChange}
-                    onKeyUp={this.calculateRolls}
-                    />
-                </div>
-                <div>
-                    <label> Fates: </label>
-                    <input type="text"
-                    value = {this.state.fates}
-                    onChange={this.handleFateChange}
-                    onKeyUp={this.calculateRolls}
-                    />
-                </div>
-
-                <h2>You have : {`${this.state.rolls}`} rolls </h2>
-                <h2>You are {`${this.state.daysTo5Star}`} days from a random 5 star</h2>
-                <h2>You are {`${this.state.daysToBanner5Star}`} days from a guaranteed 5 star</h2>
-                <p>Welkin Moon</p>
-                <select onChange = {this.handleMonthlyCardChange} value = { this.state.monthly}>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                </select>
-                <p>Soft Pity? (76 rolls)</p>
-                <select onChange = {this.handleSoftPityChange} value = { this.state.isSoftPity}>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                </select>
+                <h5>You have : {`${this.state.rolls}`} rolls </h5>
+                <h5>You are {`${this.state.daysTo5Star}`} days from a random 5 star</h5>
+                <h5>You are {`${this.state.daysToBanner5Star}`} days from a guaranteed 5 star</h5>
             </div>
 
         )
