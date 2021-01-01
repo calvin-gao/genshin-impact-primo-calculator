@@ -18,10 +18,10 @@ export class PrimoForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-             primogems : '' || localStorage.getItem('primo'),
-             rolls : 0 || localStorage.getItem('rolls'), 
-             fates : 0 || localStorage.getItem('fates'),
-             pity: 0 || localStorage.getItem('pity'),
+             primogems : localStorage.getItem('primo') || '',
+             rolls : localStorage.getItem('rolls') || 0, 
+             fates : localStorage.getItem('fates') || 0,
+             pity: localStorage.getItem('pity') || 0,
              monthly: (localStorage.getItem('monthly')  === 'true' ? true : false),
              daysTo5Star: localStorage.getItem('daysTo5Star') || 240,
              daysToBanner5Star: localStorage.getItem('daysToBanner5Star') || 480 ,
