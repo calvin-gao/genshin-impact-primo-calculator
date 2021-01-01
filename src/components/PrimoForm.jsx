@@ -18,16 +18,16 @@ export class PrimoForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-             primogems : '',
-             rolls : 0,
-             fates : 0,
-             pity: 0,
-             monthly: false,
-             daysTo5Star: 240,
-             daysToBanner5Star: 480,
-             isSoftPity: false,
-             gurantee5Star: false,
+             primogems : '' || localStorage.getItem('primo'),
+             rolls : 0 || localStorage.getItem('rolls'), 
+             fates : 0 || localStorage.getItem('fates'),
+             pity: 0 || localStorage.getItem('pity'),
+             monthly: (localStorage.getItem('monthly')  === 'true' ? true : false),
+             daysTo5Star: localStorage.getItem('daysTo5Star') || 240,
+             daysToBanner5Star: localStorage.getItem('daysToBanner5Star') || 480 ,
+             isSoftPity: (localStorage.getItem('isSoftPity')  === 'true' ? true : false)
         }
+
     }
 
 
@@ -35,8 +35,7 @@ export class PrimoForm extends Component {
         if(isNumeric(event.target.value)){
             this.setState({
                 primogems : event.target.value
-            })
-            this.calculateRolls(event);
+            } , function() { localStorage.setItem( 'primo', this.state.primogems ); this.calculateRolls(event);})
         }
     }
 
@@ -44,8 +43,7 @@ export class PrimoForm extends Component {
         if(isNumeric(event.target.value)){
             this.setState({
                 pity: event.target.value
-            })
-            this.calculateRolls(event);
+            } , function(){ this.calculateRolls(event); localStorage.setItem( 'pity', this.state.pity);})
         }
     }
     
@@ -53,21 +51,22 @@ export class PrimoForm extends Component {
         if(isNumeric(event.target.value)){
             this.setState({
                 fates : event.target.value
-            }, function() {this.calculateRolls(event) })
+            }, function() {this.calculateRolls(event); localStorage.setItem( 'fates', this.state.fates);})
         }
     }
 
     handleSoftPityChange = (event) => {
         this.setState({
             isSoftPity : event.target.value
-        }, function() {this.calculateRolls(event) })
+        }, function() {this.calculateRolls(event); localStorage.setItem( 'isSoftPity', this.state.isSoftPity);} )
+        //console.log(localStorage.getItem('isSoftPity'));
     }
 
 
     handleMonthlyCardChange = (event) => {
         this.setState({
             monthly : event.target.value
-        } ,  function() {this.calculateRolls(event) })
+        } ,  function() {this.calculateRolls(event); localStorage.setItem('monthly', this.state.monthly)})
     }
 
     calculateDays = (currentPrimo , hasMonthly , softPity, lastRoll5Star) => {
@@ -115,10 +114,12 @@ export class PrimoForm extends Component {
             {rolls : newRolls,
             daysTo5Star : newDay,
             daysToBanner5Star : newGurante5StarDay
-         }
+         }, function(){ localStorage.setItem('rolls', this.state.rolls);
+         localStorage.setItem('daysTo5Star', this.state.daysTo5Star);
+         localStorage.setItem('daysToBanner5Star', this.state.daysToBanner5Star);
+        }
         );
     }
-
     
     render() {
         return (
