@@ -6,6 +6,8 @@ export const FIRST5STARPRIMOCOUNT = 14400;
 export const GURANTEEBANNER5STAR = 28800;
 export const SOFTPITYPRIMO = 12160;
 export const TWOTIMESOFTPITY = 24320;
+export const WEAPONBANNER5STAR = 12800;
+
 const REMOVENUMERIC = ['.',' ', '-', '+'];
 
 
@@ -33,3 +35,4 @@ export function isNumeric(n) {
     }
     return false;
 };
+

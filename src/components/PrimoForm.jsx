@@ -49,15 +49,8 @@ export class PrimoForm extends Component {
         this.setState({
             isSoftPity : event.target.value
         }, function() {this.calculateRolls(event); localStorage.setItem( 'isSoftPity', this.state.isSoftPity);} )
-        //console.log(localStorage.getItem('isSoftPity'));
     }
 
-
-    handleMonthlyCardChange = (event) => {
-        this.setState({
-            monthly : event.target.value
-        } ,  function() {this.calculateRolls(event); localStorage.setItem('monthly', this.state.monthly)})
-    }
 
     calculateDays = (currentPrimo , hasMonthly , softPity, lastRoll5Star) => {
         let newDay = 0;
@@ -106,8 +99,14 @@ export class PrimoForm extends Component {
             daysToBanner5Star : newGurante5StarDay
             }
         );
-
     }
+
+    handleMonthlyCardChange = (event) => {
+        this.setState({
+            monthly : event.target.value
+        } ,  function() {this.calculateRolls(event); localStorage.setItem('monthly', this.state.monthly)})
+    }
+    
     
     render() {
         return (
