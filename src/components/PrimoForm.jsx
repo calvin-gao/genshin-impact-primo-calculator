@@ -8,10 +8,32 @@ const FIRST5STARPRIMOCOUNT = 14400;
 const GURANTEEBANNER5STAR = 28800;
 const SOFTPITYPRIMO = 12160;
 const TWOTIMESOFTPITY = 24320;
+const REMOVENUMERIC = ['.',' ', '-', '+'];
 
 
 function isNumeric(n) {
-    return (!isNaN(parseFloat(n)) && isFinite(n)) || n === "";
+    if ((!isNaN(parseFloat(n)) && isFinite(n)) || n === ""){
+        let number = null;
+
+        //quick cancel if trying to add float
+        for (let i in n){
+            if(REMOVENUMERIC.includes(n[i])){
+                return false;
+            }
+        }
+
+        if (n === ""){
+            number = 0.0;
+        }else{
+            number = parseFloat(n);
+        }
+
+        if (number !== Math.ceil(number)){
+            return false;
+        }
+        return true;
+    }
+    return false;
 };
 
 export class PrimoForm extends Component {
@@ -24,7 +46,7 @@ export class PrimoForm extends Component {
              pity: localStorage.getItem('pity') || 0,
              monthly: (localStorage.getItem('monthly')  === 'true' ? true : false),
              daysTo5Star: localStorage.getItem('daysTo5Star') || 240,
-             daysToBanner5Star: localStorage.getItem('daysToBanner5Star') || 480 ,
+             daysToBanner5Star: localStorage.getItem('daysToBanner5Star') || 480,
              isSoftPity: (localStorage.getItem('isSoftPity')  === 'true' ? true : false)
         }
 
