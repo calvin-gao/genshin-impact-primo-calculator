@@ -6,15 +6,18 @@ export class PrimoForm extends Component {
         super(props)
         this.state = {
              primogems : localStorage.getItem('primo') || '',
-             rolls : localStorage.getItem('rolls') || 0, 
              fates : localStorage.getItem('fates') || 0,
              pity: localStorage.getItem('pity') || 0,
              monthly: (localStorage.getItem('monthly')  === 'true' ? true : false),
-             daysTo5Star: localStorage.getItem('daysTo5Star') || 240,
-             daysToBanner5Star: localStorage.getItem('daysToBanner5Star') || 480,
-             isSoftPity: (localStorage.getItem('isSoftPity')  === 'true' ? true : false)
-        }
+             isSoftPity: (localStorage.getItem('isSoftPity')  === 'true' ? true : false),
+             rolls : 0, 
+             daysTo5Star: 240,
+             daysToBanner5Star: 480
+        };
+    }
 
+    componentDidMount = () => {
+        this.calculateRolls(null);
     }
 
 
@@ -82,7 +85,7 @@ export class PrimoForm extends Component {
         return newDay;
     }
     
-    calculateRolls = event => {
+    calculateRolls = (event) => {
         let currentPrimo = parseInt(this.state.primogems);
         currentPrimo = currentPrimo || 0;
         let pity = parseInt(this.state.pity);
@@ -101,11 +104,9 @@ export class PrimoForm extends Component {
             {rolls : newRolls,
             daysTo5Star : newDay,
             daysToBanner5Star : newGurante5StarDay
-         }, function(){ localStorage.setItem('rolls', this.state.rolls);
-         localStorage.setItem('daysTo5Star', this.state.daysTo5Star);
-         localStorage.setItem('daysToBanner5Star', this.state.daysToBanner5Star);
-        }
+            }
         );
+
     }
     
     render() {
