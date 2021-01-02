@@ -1,6 +1,7 @@
 import './App.css';
 import PrimoForm from './components/PrimoForm'
 import WeaponBanner from './components/WeaponBanner'
+import StandardBanner from './components/StandardBanner'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
         <PrimoForm/>
         <h3 className="mt-5">Weapon Event Wish </h3>
         <WeaponBanner/>
+        <h3 className="mt-5">Wanderlust Invocation</h3>
+        <StandardBanner/>
     </div>
   );
 }
