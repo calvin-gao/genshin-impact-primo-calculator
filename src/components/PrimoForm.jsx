@@ -1,40 +1,5 @@
-import React, { Component } from 'react'
-
-const COSTPERROLL = 160;
-const DAILYCOMMISIONGEMS = 60;
-const MONTHLYPERDAY = 90;
-//const MONTHLYINITIAL = 300;
-const FIRST5STARPRIMOCOUNT = 14400;
-const GURANTEEBANNER5STAR = 28800;
-const SOFTPITYPRIMO = 12160;
-const TWOTIMESOFTPITY = 24320;
-const REMOVENUMERIC = ['.',' ', '-', '+'];
-
-
-function isNumeric(n) {
-    if ((!isNaN(parseFloat(n)) && isFinite(n)) || n === ""){
-        let number = null;
-
-        //quick cancel if trying to add float
-        for (let i in n){
-            if(REMOVENUMERIC.includes(n[i])){
-                return false;
-            }
-        }
-
-        if (n === ""){
-            number = 0.0;
-        }else{
-            number = parseFloat(n);
-        }
-
-        if (number !== Math.ceil(number)){
-            return false;
-        }
-        return true;
-    }
-    return false;
-};
+import React, { Component } from 'react';
+import * as helper from "./helper.js";
 
 export class PrimoForm extends Component {
     constructor(props) {
@@ -54,7 +19,7 @@ export class PrimoForm extends Component {
 
 
     handlePrimogemsChange = (event) => {
-        if(isNumeric(event.target.value)){
+        if(helper.isNumeric(event.target.value)){
             this.setState({
                 primogems : event.target.value
             } , function() { localStorage.setItem( 'primo', this.state.primogems ); this.calculateRolls(event);})
@@ -62,7 +27,7 @@ export class PrimoForm extends Component {
     }
 
     handlePityChange = (event) => {
-        if(isNumeric(event.target.value)){
+        if(helper.isNumeric(event.target.value)){
             this.setState({
                 pity: event.target.value
             } , function(){ this.calculateRolls(event); localStorage.setItem( 'pity', this.state.pity);})
@@ -70,7 +35,7 @@ export class PrimoForm extends Component {
     }
     
     handleFateChange = (event) => {
-        if(isNumeric(event.target.value)){
+        if(helper.isNumeric(event.target.value)){
             this.setState({
                 fates : event.target.value
             }, function() {this.calculateRolls(event); localStorage.setItem( 'fates', this.state.fates);})
@@ -94,23 +59,23 @@ export class PrimoForm extends Component {
     calculateDays = (currentPrimo , hasMonthly , softPity, lastRoll5Star) => {
         let newDay = 0;
 
-        let targetRolls = FIRST5STARPRIMOCOUNT;
+        let targetRolls = helper.FIRST5STARPRIMOCOUNT;
 
         if(lastRoll5Star){
-            targetRolls = GURANTEEBANNER5STAR;
+            targetRolls = helper.GURANTEEBANNER5STAR;
         }
 
         if(softPity === 'true'){
             if(lastRoll5Star){
-                targetRolls = TWOTIMESOFTPITY;
+                targetRolls = helper.TWOTIMESOFTPITY;
             }else{
-                targetRolls = SOFTPITYPRIMO;
+                targetRolls = helper.SOFTPITYPRIMO;
             }
         }
     
-        let dailyPrimosGet = DAILYCOMMISIONGEMS;
+        let dailyPrimosGet = helper.DAILYCOMMISIONGEMS;
         if (hasMonthly === 'true'){
-            dailyPrimosGet += MONTHLYPERDAY
+            dailyPrimosGet += helper.MONTHLYPERDAY
         }
 
         newDay = Math.max(0,Math.ceil((targetRolls - currentPrimo) / dailyPrimosGet));
@@ -126,11 +91,11 @@ export class PrimoForm extends Component {
         fates = fates || 0;
 
         // calculate new primos based on pity, fates, and current primos
-        let newPseudoPrimo = currentPrimo + ((pity + fates) * COSTPERROLL);
+        let newPseudoPrimo = currentPrimo + ((pity + fates) * helper.COSTPERROLL);
 
         let newDay =  this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity, false);
         let newGurante5StarDay = this.calculateDays(newPseudoPrimo, this.state.monthly, this.state.isSoftPity, true);
-        let newRolls = currentPrimo / COSTPERROLL;
+        let newRolls = currentPrimo / helper.COSTPERROLL;
 
         this.setState(
             {rolls : newRolls,
